@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles\style.css">
+    </head>
+    <body>
+        <div class ="Container outer">
+           
+        <form class="cont-form">
+            <div class="hbg">
+            <h1>Create Account</h1>
+            </div>
+            <div class="inner">
+                
+            <div class = "row">
+                <div class ="namebox">
+                    <label for="fname" class="textcolor">First name*</label></br>
+                    <input  class = "space" type = "text" id="fname" name="fname" placeholder="Enter your first name" required>
+                </div>
+                <div class ="namebox">
+                    <label for="lname" class="textcolor">Last name</label></br>
+                    <input class = "space" type = "text" id="lname" name="lname" placeholder = "Enter your Last name">
+                </div>
+            </div>
+            <div class ="row">
+            <div class ="emailbox">
+                <label for="email"class="textcolor">Email*</label></br>
+                <input class = "textspace" type = "text" id="email" name="email" placeholder="Enter your email" required>
+            </div></div>
+            <div class ="row">
+                <div class ="namebox">
+                    <label for="pword"class="textcolor">Password*</label></br>
+                    <input class = "space" type = "text" id="pword" name="pword" placeholder="Enter your first Password"required>
+                </div>
+                <div class ="namebox">
+                    <label for="confirmpwd"class="textcolor">Confirm Password*</label></br>
+                    <input class = "space" type = "text" id="confirmpwd" name="confirmpwd" placeholder="Enter again your Password"required>
+                </div>
+            </div>
+            <div class = "row">
+                <div class ="radiobox">
+                    <label for="gender"class="textcolor">Gender</label></br>
+                            <input class = "space" type="radio" id="male" name = "male">
+                            <label for="male">Male</label>
+                            
+                            <input class = "space" type="radio" id="female" name = "female">
+                            <label for="female">Female</label>
+                            
+                </div>
+                <div class ="checkbox">
+                    <label for="hobbies"class="textcolor">Hobbies</label></br>
+                            
+                            <input class = "space" type="checkbox" id="music" name = "music">
+                            <label for="music">Music</label>
+                            
+                            <input class = "space" type="checkbox" id="sports" name = "sports">
+                            <label for="sports">Sports</label>
+
+                            <input class = "space" type="checkbox" id="travel" name = "travel">
+                            <label for="travel">Travel</label>
+
+                            <input class = "space" type="checkbox" id="movies" name = "movies">
+                            <label for="movies">Movies</label>
+                            </br>
+                </div>
+            </div>
+            <div class ="row">
+                <div class ="namebox">
+                    <label for="soi"class="textcolor">Source of income</label></br>
+                        <select class = "space" name="soi" id = "soi">
+                            <option value ="select">select</option>
+                            <option value ="employee">Employee</option>
+                            <option value ="business">Business</option>
+                        </select>
+                </div>
+                <div class ="namebox">
+                    <label for ="income" class="textcolor">Income</label></br>
+                    <input class = "space" type="range" style="width:80%" value="0">
+                    <span class ="button" type="submit">20K</span>
+                    </br>
+                </div>
+            </div>
+            <div class ="row">
+                <div class ="namebox">
+                    <label for="picture"class="textcolor">Upload Profile Picture</label></br>
+                    <input class = "space" type="file" id="picture" name = "picture">
+                </div>
+                <div class ="namebox">
+                    <label for="age"class="textcolor">Age</label></br>
+                    <input class = "space" type="text" id="age" name = "age"></br>
+                </div>
+            </div>
+            <div class ="row">
+                <div class="diffrow">
+                <label  for="biotext"class="textcolor">Bio</label>
+                <textarea  class = "textspace" id="biotext"></textarea>
+            </div>
+            </div>
+
+            <div  class="submit">
+            <button  class = "button" type = "submit">Create</button>
+            </div>
+        </div> 
+        </form>
+        </div>
+    </body>
+</html>
