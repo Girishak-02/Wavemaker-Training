@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <div class="cal container border border-dark w-50 h-50">
+            <nav class="navbar navbar-light">
+                <a href="" class="navbar-brand mb-0 h1">
+                    <img  class="d-inline-block align-top"  src="calculator.jpeg" alt="" width="30px" height="30px"> Calculator
+                </a>
+            </nav>
+        <div class="cal-header m-2">
+            <a href="#" class="col-2"><u>View</u></a>
+            <a href="#" class="col-2"><u>Edit</u></a>
+            <a href="#" class="col-2"><u>Help</u></a>
+            <hr>   
+        </div>
+        <div class="btn-box">
+            <input type="text" id="display"class="form-control">
+            <div class="">
+                <div class="row mb-3 mt-3">
+                        <div class="col-3"><button class="btn border btn-block" onclick="mcFunction()">MC</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="mrFunction()">MR</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="msFunction()">MS</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="mplusFunction()">M+</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="minusFunction()">M-</button></div>
+                        </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><button class="btn border btn-block"onclick="bcFunction()" >&larr;</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="bcFunction()">CE</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="cFunction()">C</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="pFunction()">&plusmn;</button></div>
+                        <div class="col-3"><button class="btn border btn-block" onclick="mFunction()">&#8730;</button></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(7)">7</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(8)">8</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(9)">9</button></div>
+                    <div class="col-3"> <button class="btn border btn-block" onclick="setOperation('/')">/</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="setOperation('%')">%</button></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(4)">4</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(5)">5</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="appendNum(6)">6</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="setOperation('*')">*</button></div>
+                    <div class="col-3"><button class="btn border btn-block" onclick="setOperation('1/x')">1/x</button></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-8">
+                        <div class="row mb-3 row-w">
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="appendNum(1)">1</button></div>
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="appendNum(2)">2</button></div>
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="appendNum(3)">3</button></div>
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="setOperation('-')">-</button></div>
+                        </div>
+                        <div class="row mb-3 row-w">
+                            <div class="col-6"><button class="btn border btn-block" onclick="appendNum(0)">0</button></div>
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="appendNum('.')">.</button></div>
+                            <div class="col-2"><button class="btn border btn-block btn-w" onclick="setOperation('+')">+</button></div>
+                        </div>
+                    </div>
+                     <div class="col-3">
+                      <button value="="class="btn border btn-block btn-h" onclick="result()">=</button>
+                    </div> 
+                    </div>
+                </div>
+            </div>   
+        </div> 
+    </body>
+</html>

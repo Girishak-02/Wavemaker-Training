@@ -1,0 +1,66 @@
+.btn-box{
+    margin: 20px;
+}
+
+.container{
+    background-color: whitesmoke;
+    justify-content: center;
+
+}
+.row{
+    flex-wrap: nowrap;
+}
+.btn-block+.btn-block {
+    margin-top: 0rem; 
+}
+.btn-block+.btn-block{
+margin-left: 10px;
+}
+.btn-w{
+    width:100px;
+}
+.btn-h{
+    height:85%;
+    margin-left: 70px;
+}
+.box{
+    height: 80px;
+}
+.row-w{
+width:700px;
+margin:0px;
+}
+.col-3{
+    max-width: 19.5%;
+}
+.row-w .col-3{
+    padding-right: 15px;
+    margin-right: 5px;
+}
+.cal-header{
+    padding: 3px 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.col-3{
+    padding-right: 0px;}
+.cal{
+    padding: 0px;
+}
+hr{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.form{
+    height: 80px;
+}
+.col-8{
+    padding: 0px;
+}
+.col-6{
+    padding-right: 0px;
+    max-width: 33%;
+}
+#display{
+    text-align: right;
+}
