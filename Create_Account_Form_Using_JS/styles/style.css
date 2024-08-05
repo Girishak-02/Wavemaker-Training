@@ -1,0 +1,113 @@
+
+.Income_type
+{
+    display :none;
+}
+.button{
+    background-color: rgb(46, 175, 10);
+}
+ .space{
+    margin-bottom: 5%;
+ }
+ .namebox select{
+width:95%;
+ }
+ .namebox{
+    width:50%;
+    float: left;
+    padding-top: 10px; 
+ }
+ .radiobox,.checkbox{  
+    width:50%;
+    float: left;
+    padding-top: 10px;   
+}
+.row .namebox input{
+    width:95%;
+}
+.emailbox input {  
+    width:98%;
+}
+.emailbox{
+    display: flow-root;
+    width:100%;
+    padding-bottom: 10px;
+}
+.biobox{
+    padding-top: 25%;
+}
+.textspace{
+    width: 100%;
+}
+.diffrow{
+width:98%;
+}
+h1{
+    border-bottom: 1.5px solid #cdc9c9;
+    padding:15px;
+    margin-block-start: 0.2em;   
+     text-align: center;
+}
+.Container{
+    margin:70px 250px;
+    border : 15px solid #347889;
+    height:auto;
+    background-color: #347889;
+}
+.row{
+    width:100%;
+}
+form{
+    height:600px; 
+    border-radius: 25px;
+    border: 10px solid #347889;
+    background-color: white;
+}
+.inner{
+    padding: 0% 5%;
+}
+body{
+    background-color: #f2f2f2;
+}
+.submit{
+    padding:15px;
+    height: 40px;
+}
+.submit button{
+    margin:10px;
+    float:right;
+} 
+.textcolor{
+    color: darkgreen;
+    font-weight: bold;
+}
+@media screen and (max-width: 480px) {
+    body{
+        background-color: #f2f2f2;
+    }
+    .Container{
+    margin: 10px 10px;
+    }
+    .namebox,.row,.row div,.button,.Income_type{
+        width:100%;
+    }
+    .emailbox input
+    {
+        width:95%;
+    }
+    .diffrow input
+    {
+        width:90%;
+    }
+    form{
+        height: auto;
+    }
+    .textspace{
+        width: 100%;
+    }    
+}
+
+
+
+
+
