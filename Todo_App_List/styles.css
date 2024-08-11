@@ -1,0 +1,39 @@
+
+body.dark-mode{
+    background-color: black;
+    color:white;
+}
+h1 {
+    margin-left: 30%;
+}
+h5{
+    text-align: center;
+}
+.todo-item {
+    background-color:whitesmoke;
+    color: black;
+}
+
+.subtask-item {
+    background-color: var(--subtask-bg-color);
+}
+
+.priority-low {
+    border-left: 5px solid green;
+}
+
+.priority-medium {
+    border-left: 5px solid yellow;
+}
+
+.priority-high {
+    border-left: 5px solid red;
+}
+
+.list-group {
+    padding: 10px;
+}
+
+.list-group-item {
+    margin-bottom: 10px;
+}
