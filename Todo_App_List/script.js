@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const theme = document.getElementById('theme-toggle');
+    const theme = document.getElementById('theme');
     const addTodoButton = document.getElementById('add-todo');
     const newTodoInput = document.getElementById('new-todo');
     const todoList = document.getElementById('todo-list');
@@ -8,12 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const sortTodoSelect = document.getElementById('sort-todo');
     const importFileInput = document.getElementById('import-file');
     const exportTodoButton = document.getElementById('export-todo');
+
     const editTodoModal = new bootstrap.Modal(document.getElementById('editTodoModal'));
     const editTodoInput = document.getElementById('edit-todo-input');
-    const editDueDateInput = document.getElementById('edit-due-date');
-    const editDueTimeInput = document.getElementById('edit-due-time');
+    const editDueDateInput = document.getElementById('edit-date');
+    const editDueTimeInput = document.getElementById('edit-time');
     const editPrioritySelect = document.getElementById('edit-priority-select');
     const saveTodoButton = document.getElementById('save-todo');
+    const subtaskModal = new bootstrap.Modal(document.getElementById('AddSubTask'));
+    const subtaskInput = document.getElementById('subtask-input');
+    const subtaskDateInput = document.getElementById('subtask-date');
+    const subtaskTimeInput = document.getElementById('subtask-time');
+    const subtaskPrioritySelect = document.getElementById('subtask-priority');
+    const addSubtaskButton = document.getElementById('add-subtask-button');
+    
     let currentEdit = null;
 
     if (Notification.permission !== 'granted') {
@@ -59,6 +67,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    addSubtaskButton.addEventListener('click', () => {
+        const subtaskText = subtaskInput.value.trim();
+        const subtaskPriority = subtaskPrioritySelect.value;
+        const subtaskDate = subtaskDateInput.value;
+        const subtaskTime = subtaskTimeInput.value;
+        const subtaskDateTime = `${subtaskDate}T${subtaskTime}`;
+
+        if (subtaskText !== '' && subtaskPriority !== 'Select') {
+            const subtaskLi = document.createElement('li');
+            subtaskLi.className = `list-group-item subtask-item priority-${subtaskPriority}`;
+            subtaskLi.innerHTML = `
+                <span class="subtask-text">${subtaskText}</span>
+                <span class="subtask-datetime" datetime="${subtaskDateTime}">${formatDateTime(subtaskDateTime)}</span>
+                <div class="container">
+                    <button class="btn btn-sm btn-warning edit-subtask">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-subtask">Delete</button>
+                </div>
+            `;
+            const editSubtaskButton = subtaskLi.querySelector('.edit-subtask');
+            const deleteSubtaskButton = subtaskLi.querySelector('.delete-subtask');
+
+            editSubtaskButton.addEventListener('click', () => {
+                // Handle subtask editing if needed
+            });
+
+            deleteSubtaskButton.addEventListener('click', () => {
+                subtaskLi.parentElement.removeChild(subtaskLi);
+                saveTodos();
+            });
+
+            currentEdit.querySelector('.subtask-list').appendChild(subtaskLi);
+            subtaskModal.hide();
+            subtaskInput.value = '';
+            subtaskDateInput.value = '';
+            subtaskTimeInput.value = '';
+            subtaskPrioritySelect.value = 'Select';
+            saveTodos();
+        }
+    });
+
     exportTodoButton.addEventListener('click', exportTodos);
     importFileInput.addEventListener('change', importTodos);
 
@@ -67,7 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
             saveTodos();
         }
     });
+
     loadTodos();
+
     function addTodo() {
         const todoText = newTodoInput.value.trim();
         const priority = prioritySelect.value;
@@ -79,20 +129,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
             li.className = `list-group-item todo-item priority-${priority}`;
             li.innerHTML = `
-                <span class="todo-text ">${todoText}</span>
-                <span class="todo-datetime " datetime="${dueDateTime}">${formatDateTime(dueDateTime)}</span>
-                <div class="container ">
+                <span class="todo-text">${todoText}</span>
+                <span class="todo-datetime" datetime="${dueDateTime}">${formatDateTime(dueDateTime)}</span>
+                <div class="container">
                     <button class="btn btn-sm btn-warning edit-todo">Edit</button>
                     <button class="btn btn-sm btn-danger delete-todo">Delete</button>
+                    <button class="btn btn-sm btn-success subtask-todo">Sub Task</button>
                 </div>
+                <ul class="subtask-list mt-2"></ul>
             `;
             const editButton = li.querySelector('.edit-todo');
             const deleteButton = li.querySelector('.delete-todo');
-            const subTaskButton = li.querySelector('.add-subtask');
+            const subtaskButton = li.querySelector('.subtask-todo');
 
             editButton.addEventListener('click', () => {
                 currentEdit = li;
                 editTodoInput.value = todoText;
+                const [editDate, editTime] = dueDateTime.split('T');
                 editDueDateInput.value = editDate;
                 editDueTimeInput.value = editTime;
                 editPrioritySelect.value = priority;
@@ -104,6 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveTodos();
             });
 
+            subtaskButton.addEventListener('click', () => {
+                currentEdit = li;
+                subtaskModal.show();
+            });
+
             todoList.appendChild(li);
             newTodoInput.value = '';
             prioritySelect.value = 'Select';
@@ -111,6 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('time-picker').value = '';
             saveTodos();
             scheduleNotification(todoText, dueDateTime);
+
+            let datetime = new Date(`${date}T${time}`);
+            let currentTime = new Date();
+            if (datetime < currentTime) {
+                alert("The task time is past");
+                return;
+            }
         }
     }
 
@@ -136,7 +201,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = item.querySelector('.todo-text').textContent;
             const priority = item.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
             const datetime = item.querySelector('.todo-datetime').getAttribute('datetime');
-            todos.push({ text, priority, datetime });
+            const subtasks = Array.from(item.querySelectorAll('.subtask-list .subtask-item')).map(subtask => {
+                return {
+                    text: subtask.querySelector('.subtask-text').textContent,
+                    priority: subtask.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1],
+                    datetime: subtask.querySelector('.subtask-datetime').getAttribute('datetime')
+                };
+            });
+            todos.push({ text, priority, datetime, subtasks });
         });
 
         localStorage.setItem('todos', JSON.stringify(todos));
@@ -144,23 +216,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadTodos() {
         const todos = JSON.parse(localStorage.getItem('todos')) || [];
-        todos.sort((a, b) => {
-            const priorityOrder = { low: 1, medium: 2, high: 3 };
-            return priorityOrder[b.priority] - priorityOrder[a.priority];
-        }).forEach(todo => {
+
+        todos.forEach((todo) => {
             const li = document.createElement('li');
             li.className = `list-group-item todo-item priority-${todo.priority}`;
             li.innerHTML = `
                 <span class="todo-text">${todo.text}</span>
-                <time class="todo-datetime" datetime="${todo.datetime}">${formatDateTime(todo.datetime)}</time>
-                <div class="container float-end">
+                <span class="todo-datetime" datetime="${todo.datetime}">${formatDateTime(todo.datetime)}</span>
+                <div class="container">
                     <button class="btn btn-sm btn-warning edit-todo">Edit</button>
                     <button class="btn btn-sm btn-danger delete-todo">Delete</button>
-                    
+                    <button class="btn btn-sm btn-success subtask-todo">Sub Task</button>
                 </div>
+                <ul class="subtask-list mt-2"></ul>
             `;
+
             const editButton = li.querySelector('.edit-todo');
             const deleteButton = li.querySelector('.delete-todo');
+            const subtaskButton = li.querySelector('.subtask-todo');
 
             editButton.addEventListener('click', () => {
                 currentEdit = li;
@@ -177,114 +250,106 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveTodos();
             });
 
+            subtaskButton.addEventListener('click', () => {
+                currentEdit = li;
+                subtaskModal.show();
+            });
+
+            todo.subtasks.forEach((subtask) => {
+                const subtaskLi = document.createElement('li');
+                subtaskLi.className = `list-group-item subtask-item priority-${subtask.priority}`;
+                subtaskLi.innerHTML = `
+                    <span class="subtask-text">${subtask.text}</span>
+                    <span class="subtask-datetime" datetime="${subtask.datetime}">${formatDateTime(subtask.datetime)}</span>
+                    <div class="container">
+                        <button class="btn btn-sm btn-warning edit-subtask">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-subtask">Delete</button>
+                    </div>
+                `;
+
+                
+                const deleteSubtaskButton = subtaskLi.querySelector('.delete-subtask');
+
+                deleteSubtaskButton.addEventListener('click', () => {
+                    subtaskLi.parentElement.removeChild(subtaskLi);
+                    saveTodos();
+                });
+
+                li.querySelector('.subtask-list').appendChild(subtaskLi);
+            });
+
             todoList.appendChild(li);
-            scheduleNotification(todo.text, todo.datetime);
         });
     }
 
-    function scheduleNotification(text, dateTime) {
+    function formatDateTime(datetime) {
+        const date = new Date(datetime);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+        return date.toLocaleString(undefined, options).replace(',', '');
+    }
+
+    function scheduleNotification(text, datetime) {
+        const notifyDate = new Date(datetime);
         const now = new Date();
-        const then = new Date(dateTime);
-        const delay = then - now;
+        const delay = notifyDate - now;
 
         if (delay > 0) {
             setTimeout(() => {
-                new Notification('Task Reminder', {
-                    body: `Task: ${text} is due `,
-                });
+                if (Notification.permission === 'granted') {
+                    new Notification('To-Do Reminder', {
+                        body: `Don't forget: ${text}`,
+                    });
+                }
             }, delay);
         }
     }
 
-    function formatDateTime(dateTime) {
-        const date = new Date(dateTime);
-        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
-
     function sortByPriority() {
-        const items = Array.from(todoList.getElementsByTagName('li'));
+        const items = Array.from(todoList.querySelectorAll('li.todo-item'));
         items.sort((a, b) => {
-            const priorityOrder = { low: 1, medium: 2, high: 3 };
-            const aPriority = a.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
-            const bPriority = b.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
-            return priorityOrder[bPriority] - priorityOrder[aPriority];
+            const priorityA = a.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
+            const priorityB = b.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
+            return priorityB.localeCompare(priorityA);
         });
         items.forEach(item => todoList.appendChild(item));
     }
 
     function sortByDateTime() {
-        const items = Array.from(todoList.getElementsByTagName('li'));
+        const items = Array.from(todoList.querySelectorAll('li.todo-item'));
         items.sort((a, b) => {
-            const aDateTime = new Date(a.querySelector('.todo-datetime').getAttribute('datetime'));
-            const bDateTime = new Date(b.querySelector('.todo-datetime').getAttribute('datetime'));
-            return aDateTime - bDateTime;
+            const dateTimeA = new Date(a.querySelector('.todo-datetime').getAttribute('datetime'));
+            const dateTimeB = new Date(b.querySelector('.todo-datetime').getAttribute('datetime'));
+            return dateTimeA - dateTimeB;
         });
         items.forEach(item => todoList.appendChild(item));
     }
 
     function exportTodos() {
-        const todos = [];
-        const items = todoList.getElementsByTagName('li');
-
-        Array.from(items).forEach((item) => {
-            const text = item.querySelector('.todo-text').textContent;
-            const priority = item.className.split(' ').find(cls => cls.startsWith('priority-')).split('-')[1];
-            const datetime = item.querySelector('.todo-datetime').getAttribute('datetime');
-            todos.push({ text, priority, datetime });
-        });
-
-        const blob = new Blob([JSON.stringify(todos)], { type: 'application/json' });
+        const todos = JSON.parse(localStorage.getItem('todos')) || [];
+        const blob = new Blob([JSON.stringify(todos, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'todos.json';
+        document.body.appendChild(a);
         a.click();
-        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
     }
 
     function importTodos(event) {
         const file = event.target.files[0];
-        if (file && file.type === 'application/json') {
+        if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                const todos = JSON.parse(reader.result);
-                todoList.innerHTML = '';
-                todos.forEach(todo => {
-                    const li = document.createElement('li');
-                    li.className = `list-group-item todo-item priority-${todo.priority}`;
-                    li.innerHTML = `
-                        <span class="todo-text">${todo.text}</span>
-                        <time class="todo-datetime" datetime="${todo.datetime}">${formatDateTime(todo.datetime)}</time>
-                        <div class="container float-end">
-                            <button class="btn btn-sm btn-warning edit-todo">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-todo">Delete</button>
-                        </div>
-                    `;
-
-                    const editButton = li.querySelector('.edit-todo');
-                    const deleteButton = li.querySelector('.delete-todo');
-
-                    editButton.addEventListener('click', () => {
-                        currentEdit = li;
-                        editTodoInput.value = todo.text;
-                        editDueDateInput.value = editDate;
-                        editDueTimeInput.value = editTime;
-                        editPrioritySelect.value = todo.priority;
-                        editTodoModal.show();
-                    });
-
-                    deleteButton.addEventListener('click', () => {
-                        todoList.removeChild(li);
-                        saveTodos();
-                    });
-
-                    todoList.appendChild(li);
-                });
-                saveTodos();
+                try {
+                    const todos = JSON.parse(reader.result);
+                    localStorage.setItem('todos', JSON.stringify(todos));
+                    loadTodos();
+                } catch (error) {
+                    alert('Failed to load todos.');
+                }
             };
             reader.readAsText(file);
-        } else {
-            alert('Please upload a valid JSON file.');
         }
     }
 });

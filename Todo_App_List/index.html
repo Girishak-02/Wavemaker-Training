@@ -12,9 +12,10 @@
     <div class="container-fluid mt-5 w-75 h-75">
         <header class="d-flex justify-content-between align-items-center mb-4">
             <h1>To-Do List</h1>
-            <button id="theme-toggle" class="btn btn-dark">🌙</button>
+            <button id="theme" class="btn btn-dark">🌙</button>
         </header>
         <div class="input-group mb-3 col-12">
+            <label for=" new-todo"></label>
             <input type="text" id="new-todo" class="form-control ml-3 col-3 text-center" placeholder="Add Task">
             <select id="priority" class="select-button col-2 ml-3">
                 <option value="Select">Select</option>
@@ -54,8 +55,8 @@
                 </div>
                 <div class="modal-body ">
                     <input type="text" id="edit-todo-input" class="form-control ">
-                    <input type="date" id="edit-due-date" class="form-control mt-2 ">
-                    <input type="time" id="edit-due-time" class="form-control mt-2 ">
+                    <input type="date" id="edit-date" class="form-control mt-2 ">
+                    <input type="time" id="edit-time" class="form-control mt-2 ">
                     <select id="edit-priority-select" class="custom-select mt-2 ">
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -66,6 +67,34 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="save-todo">Save </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AddSubTask" tabindex="-1" role="dialog" aria-labelledby="AddSubTaskModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AddSubTaskHead">Add Sub Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="subtask-input" class="form-control">
+                    <input type="date" id="subtask-date" class="form-control mt-2">
+                    <input type="time" id="subtask-time" class="form-control mt-2">
+                    <select id="subtask-priority" class="custom-select mt-2">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="add-subtask-button">Add Sub Task</button>
                 </div>
             </div>
         </div>
